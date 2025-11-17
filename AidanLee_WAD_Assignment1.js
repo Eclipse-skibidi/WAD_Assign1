@@ -1,58 +1,72 @@
 module.exports = {
-    // Topic chosen: Hotel management
+    hotels: [],
+    repairMan_timetable: [],
+    assign_cleaner: [],
 
-    // adding different hotels
-    hotels : [],
-    rooms : [],
-    repairMan_timetable : [],
-    employees : [],
-    assign_cleaner : [],
-
-    add_hotel(hotel_name, hotel_location, hotel_rating){
+    // ADD HOTEL
+    add_hotel(hotel_name, hotel_location, hotel_rating) {
         this.hotels.push({
-            name : hotel_name,
-            location : hotel_location,
-            rating : hotel_rating
+            name: hotel_name,
+            location: hotel_location,
+            rating: hotel_rating,
+
+            rooms: [],
+            employees: []
         });
     },
 
-    // get hotel
-    get_hotel(i){
-
+    // ADD ROOMS TO A SPECIFIC HOTEL
+    add_rooms(i, room_id, room_type, bed_type, numOf_beds, room_status) {
+        this.hotels[i].rooms.push({
+            room_id,
+            room_type,
+            bed_type,
+            numOf_beds,
+            room_status
+        });
     },
 
-    // sending a repair man to the hotel
-    send_repairMan(guy_name, guy_serial_num, hotels, i, startDate, startTime, endDate, endTime){
+    // HIRE EMPLOYEES FOR A SPECIFIC HOTEL
+    hire_employees(i, employee_name, employee_id, job_type, salary) {
+        this.hotels[i].employees.push({
+            employee_name,
+            employee_id,
+            job_type,
+            salary
+        });
+    },
+
+    // GET HOTEL
+    get_hotel(i) {
+        return this.hotels[i];
+    },
+
+    // SEND REPAIRMAN
+    send_repairMan(guy_name, guy_serial_num, hotelIndex, startDate, startTime, endDate, endTime) {
         this.repairMan_timetable.push({
-            name : guy_name,
-            serial_num : guy_serial_num,
-            assigned_hotel : hotels[i], 
-            start : {
-                date : startDate,
-                time : startTime,
-            },
-            end : {
-                date : endDate,
-                time : endTime,
-            }
+            name: guy_name,
+            serial_num: guy_serial_num,
+            assigned_hotel: this.hotels[hotelIndex].name,
+
+            start: { date: startDate, time: startTime },
+            end: { date: endDate, time: endTime }
         });
     },
 
-    // set types of rooms and bed type to associated room
-    add_rooms(hotels, i, room_id, room_type, bed_type, numOf_beds, room_status){},
+    // ASSIGN CLEANER
+    send_cleaner(hotelIndex, roomIndex, cleanerIndex) {
+        const hotel = this.hotels[hotelIndex];
+        const room = hotel.rooms[roomIndex];
+        const cleaner = hotel.employees[cleanerIndex];
 
-    // hire employees
-    hire_employees(employee_name, employee_id, job_type, salary){},
-
-    // send a cleaner to the designated room
-    send_cleaner(cleaner_name, cleaner_id, rooms, employees, i,){
-        if(employees["employee_id"] == "cleaner" && rooms["room_status"] == "clean"){
+        if (cleaner.job_type === "cleaner" && room.room_status === "dirty") {
             this.assign_cleaner.push({
-                cleaner_name : cleaner_name,
-                cleaner_id : cleaner_id,
-                room_id : rooms[i]
-
+                cleaner_name: cleaner.employee_name,
+                cleaner_id: cleaner.employee_id,
+                room_id: room.room_id
             });
+
+            room.room_status = "cleaning";
         }
     }
 }
