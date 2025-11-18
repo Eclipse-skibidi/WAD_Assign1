@@ -25,6 +25,9 @@ WAD.send_repairMan(
     "12:00"
 );
 
+console.log("Rooms array:");
+console.log(WAD.get_rooms("VivoCity"));
+
 // send cleaner to room
 WAD.send_cleaner("VivoCity", 101, "E001");
 WAD.send_cleaner("VivoCity", 101, "E002");
